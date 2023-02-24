@@ -19,4 +19,4 @@ received_data = sock.recv(1024)
 print(f"Received data: {received_data.decode()}")
 
 # Close the socket connection
-sock.close()
+# sock.close()
