@@ -1,13 +1,13 @@
 import socket
 import time
 import threading
+import random
 controlHost = ""
 controlPort = 420
 
 
-def clientThread():
+def clientThread(newPort):
     print("stuff")
-    newPort = 1000
     with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as clientSocket:
         clientSocket.bind((controlHost, newPort))
         clientSocket.listen()
@@ -24,9 +24,9 @@ def clientThread():
 
 
 def negotiate(conn):
-    port = 1000
-    conn.sendall(b"PORT:1000")
-    t = threading.Thread(target=clientThread, daemon=True)
+    port = random.randint(1000,2000)
+    conn.sendall(f"PORT:{port}".encode())
+    t = threading.Thread(target=clientThread, daemon=True,args=(port,))
     t.start()
     return True
 
