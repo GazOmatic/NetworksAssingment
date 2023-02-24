@@ -7,7 +7,20 @@ controlPort = 420
 
 def clientThread():
     print("stuff")
-    server(controlHost, 1000)
+    newPort = 1000
+    with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as clientSocket:
+        clientSocket.bind((controlHost, newPort))
+        clientSocket.listen()
+        conn, addr = clientSocket.accept()
+        with conn:
+            print(f"Connected by {addr} on {newPort}")
+            while True:
+                conn.sendall(input("#").encode())
+                data = conn.recv(1024)
+                print(data)
+            conn.close()
+
+
 
 
 def negotiate(conn):
@@ -18,28 +31,21 @@ def negotiate(conn):
     return True
 
 
-def server(HOST, PORT):
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
-        server.bind((HOST, PORT))
-        server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        server.listen()
-        conn, addr = server.accept()
-        with conn:
-            print(f"Connected by {addr}")
-            while True:
-                if PORT == 420:
-                    if negotiate(conn):
-                        time.sleep(2)
-                        print("Not closed")
-                        break
-                else:
-                    data = conn.recv(1024)
-
-            server.close()
-            server.
+def server(sock,HOST,PORT):
+    conn, addr = sock.accept()
+    with conn:
+        print(f"Connected by {addr} on {PORT}")
+        while True:
+            if PORT == 420:
+                if negotiate(conn):
+                    print("Negotiated port")
+                    break
+        conn.close()
 
 
-while True:
-    server(controlHost, controlPort)
-    print("Resetting control port")
-    time.sleep(1)
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+    sock.bind((controlHost, controlPort))
+    sock.listen()
+    while True:
+        server(sock,controlHost,controlPort)
+        print("Resetting control port")
