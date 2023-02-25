@@ -1,0 +1,22 @@
+Methods:
+
+ls --> list all files
+	-p --> all files i have permission too?
+
+POST -x "file.name" --> upload file
+
+	-e --> encrypt file
+	-o --> open file
+	-p --> protected file
+
+GET "file.name" --> download file
+
+	-e --> encrypt file
+
+perm -x "username" "" --> give/revoke permission
+	-g --> give
+	-r --> revoke
+
+help --> list all commands
+
+--? file validation
