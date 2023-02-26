@@ -21,7 +21,6 @@ def clientThread(newPort):
                 conn.sendall(input("#").encode())
                 data = conn.recv(1024)
                 print(data)
-            conn.close()
 
 
 
