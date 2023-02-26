@@ -2,13 +2,14 @@ import socket
 import time
 import threading
 import random
+from portManager import *
 controlHost = ""
 controlPort = 420
 
 
 def clientThread(newPort):
     print("stuff")
-    with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as clientSocket:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
         clientSocket.bind((controlHost, newPort))
         clientSocket.listen()
         conn, addr = clientSocket.accept()
@@ -21,17 +22,15 @@ def clientThread(newPort):
             conn.close()
 
 
-
-
 def negotiate(conn):
-    port = random.randint(1000,2000)
+    port = getPort()
     conn.sendall(f"PORT:{port}".encode())
-    t = threading.Thread(target=clientThread, daemon=True,args=(port,))
+    t = threading.Thread(target=clientThread, daemon=True, args=(port,))
     t.start()
     return True
 
 
-def server(sock,HOST,PORT):
+def server(sock, HOST, PORT):
     conn, addr = sock.accept()
     with conn:
         print(f"Connected by {addr} on {PORT}")
@@ -47,5 +46,5 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     sock.bind((controlHost, controlPort))
     sock.listen()
     while True:
-        server(sock,controlHost,controlPort)
+        server(sock, controlHost, controlPort)
         print("Resetting control port")
