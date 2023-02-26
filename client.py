@@ -19,7 +19,7 @@ newPort = int(received_data.split(":")[1])
 print(newPort)
 
 sock.close()
-'''
+
 
 c = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -29,7 +29,7 @@ while True:
     print(s)
     c.sendall(input("#").encode())
 c.close()
-'''
+
 
 # Close the socket connection
 # sock.close()
