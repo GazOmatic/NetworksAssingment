@@ -11,6 +11,7 @@ port = 3000       # The remote host port number
 sock.connect((host, port))
 
 print("Welcome to CLS File Sharing Platform")
+print("Type HELP for list of commands")
 
 
 while True:

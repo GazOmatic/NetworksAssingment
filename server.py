@@ -38,18 +38,20 @@ def actionList(message):
 
 def actionGet(message):
     print("GET")
+    # TODO
 
 
 def actionPost(message):
     print("POST")
+    # TODO
 
 
 # This function prints a list of all commands the server accepts to the client
 
 
 def actionHelp(message):
-
-    print("HELP")
+    conn.sendall(
+        "Commands:\nList all files: LIST\nUpload file: POST\nDownload file: GET".encode())
 
 
 def clientThread(conn):
@@ -71,6 +73,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
         clientSocket.bind((controlHost, PORT))
         clientSocket.listen()
+
         while True:
             try:
                 conn, addr = clientSocket.accept()
