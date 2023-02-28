@@ -24,12 +24,12 @@ def processHeader(message, conn):
 # This method lists all files to the client
 def actionList(message):
     if message.split("#")[1] == "":
-
+        fileList = ""
         files = os.listdir("Files/")
         for f in files:
-            list.append("/n", f)
+            fileList += f + "\n"
 
-        conn.sendall(list.encode())
+        conn.sendall(fileList.encode())
     elif message.split("#")[1] == "ACCESS":
         conn.sendall("List all files I have access to".encode())
     else:
@@ -66,7 +66,6 @@ def clientThread(conn):
 
 threads = []
 
-print("test: ", actionList("LIST##"))
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
