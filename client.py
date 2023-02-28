@@ -10,13 +10,19 @@ port = 3000       # The remote host port number
 # Connect to the server
 sock.connect((host, port))
 
-# Receive data from the server
+print("Welcome to CLS File Sharing Platform")
+
+
 while True:
+    # Receive data from the server
     received_data = sock.recv(1024).decode()
     print(f"Server: {received_data}")
+
+    # Send data to server
     message = input(":")
     if len(message) == 0:
         message = "#"
+    #
     sock.sendall(message.encode())
 
 
