@@ -1,5 +1,6 @@
 import socket
 import threading
+import os
 controlHost = ""
 PORT = 3000
 
@@ -14,8 +15,6 @@ def processHeader(message, conn):
         actionPost(message)
     elif message.split("#")[0] == "HELP":
         actionHelp(message)
-    elif message.split("#")[0] == "PERMISSION":
-        actionPermission(message)
     else:
         conn.sendall("Unknown Server Command".encode())
     output = "Output"
@@ -25,7 +24,12 @@ def processHeader(message, conn):
 # This method lists all files to the client
 def actionList(message):
     if message.split("#")[1] == "":
-        conn.sendall("List all files".encode())
+
+        files = os.listdir("Files/")
+        for f in files:
+            list.append("/n", f)
+
+        conn.sendall(list.encode())
     elif message.split("#")[1] == "ACCESS":
         conn.sendall("List all files I have access to".encode())
     else:
@@ -39,11 +43,6 @@ def actionGet(message):
 def actionPost(message):
     print("POST")
 
-
-def actionPermission(message):
-    print("PERMISSION")
-    # how do we want to manage file permissions?
-    # password protection??
 
 # This function prints a list of all commands the server accepts to the client
 
@@ -66,6 +65,8 @@ def clientThread(conn):
 
 
 threads = []
+
+print("test: ", actionList("LIST##"))
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
