@@ -11,7 +11,12 @@ port = 420       # The remote host port number
 sock.connect((host, port))
 
 # Receive data from the server
-received_data = sock.recv(1024).decode()
+while True:
+    received_data = sock.recv(1024).decode()
+    message = input(":")
+    if len(message) == 0:
+        message = "#"
+    sock.sendall(input("#").encode())
 
 
 sock.close()
