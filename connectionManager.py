@@ -1,5 +1,5 @@
 import socket
-
+import logging
 
 class connectionManager:
     def __init__(self, sending: bool, sock: socket.socket, BATCH: int) -> None:
@@ -21,6 +21,8 @@ class connectionManager:
         except ConnectionResetError:
             print("Lost connection to client")
             return 0
+        except ConnectionAbortedError:
+            return 0
         return data
 
     def send(self, data: str):  # Function that will send the data
@@ -28,5 +30,8 @@ class connectionManager:
             self.sock.sendall(data.encode())
         except ConnectionResetError:
             print("Could not send data")
+            return 0
+        except ConnectionAbortedError:
+            print("Connection aborted")
             return 0
         return 1
