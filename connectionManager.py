@@ -9,16 +9,22 @@ class connectionManager:
 
     def next(self, data: str):
         if self.sending == True:
-            sending = False
+            self.sending = False
             return self.send(data)
         else:
-            sending = True
+            self.sending = True
             return self.receive(data)
 
     def receive(self, data: str):
-        data = self.sock.recv(self.BATCH).decode()
+        try:
+            data = self.sock.recv(self.BATCH).decode()
+        except ConnectionResetError:
+            print("Lost connection to client")
         return data
 
     def send(self, data: str):
-        self.sock.sendall(data.encode())
+        try:
+            self.sock.sendall(data.encode())
+        except ConnectionResetError:
+            print("Could not send data")
         return "Send success"

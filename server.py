@@ -28,7 +28,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
             t.daemon = True
             t.start()
             threads.append(t)
-            print(len(threads))
+            print(threads[0])
         except KeyboardInterrupt:
             print("Done")
             clientSocket.close()
