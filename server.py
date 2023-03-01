@@ -73,12 +73,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
         clientSocket.bind((controlHost, PORT))
         clientSocket.listen()
-
         while True:
             try:
                 conn, addr = clientSocket.accept()
-                t = threading.Thread(target=clientThread,
-                                     daemon=True, args=(conn,))
+                # When connection is created fork the thread and then repeat
+                t = threading.Thread(target=clientThread, args=(conn,))
+                t.daemon = True
                 t.start()
                 threads.append(t)
                 print(len(threads))
