@@ -1,7 +1,7 @@
 import socket
 import threading
 import os
-import connectionManager
+from connectionManager import connectionManager
 controlHost = ""
 PORT = 3000
 
@@ -13,9 +13,8 @@ def clientThread(conn: socket.socket):
     with conn:
         print(f"Connected by {addr} on {PORT}")
         man = connectionManager(False,conn,BATCH) # create a new connection manager and set to not sending
-        man.sen
-
-
+        while True:
+            print(man.next("Hello world"))
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
     clientSocket.bind((controlHost, PORT))

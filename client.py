@@ -1,5 +1,6 @@
 import socket
 import time
+from connectionManager import connectionManager
 # Create a socket object
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -7,25 +8,14 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = 'localhost'  # The remote host IP address
 port = 3000       # The remote host port number
 sending = True
-
 BATCH = 1024
 sock.connect((host, port))
 
-def receive(data:str):
-    if sending == True:
-        return send(data)
-    else:
-      return sock.recv(BATCH).decode()  
-
-def send(data:str):
-    print()
-    if sending == False:
-        return receive()
-    else:
-        return sock.sendall(data.encode())
+man = connectionManager(True,sock,BATCH)
 
 def get(filename:str):
-    print()
+    print(man.next("GET#zero.py#"))
+    
 
 # Connect to the server
 print("Welcome to CLS File Sharing Platform")
