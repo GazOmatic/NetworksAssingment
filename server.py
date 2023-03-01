@@ -1,6 +1,7 @@
 import socket
 import threading
 import os
+import time
 from connectionManager import connectionManager
 controlHost = ""
 PORT = 3000
@@ -14,7 +15,9 @@ def clientThread(conn: socket.socket):
         print(f"Connected by {addr} on {PORT}")
         man = connectionManager(False,conn,BATCH) # create a new connection manager and set to not sending
         while True:
-            print(man.next("Hello world"))
+            out = man.next("Hello world")
+            if out == 0: # If it could not send the data, terminate the current thread
+                break
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
     clientSocket.bind((controlHost, PORT))
@@ -28,7 +31,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
             t.daemon = True
             t.start()
             threads.append(t)
-            print(threads[0])
+            print(f"Active Clients {len(threads)}")
         except KeyboardInterrupt:
             print("Done")
             clientSocket.close()
