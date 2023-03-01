@@ -36,14 +36,12 @@ def actionList(message):
         conn.sendall("Unknown Server Command".encode())
 
 
-def actionGet(message):
+def actionGet(message):  # TODO
     print("GET")
-    # TODO
 
 
-def actionPost(message):
+def actionPost(message):  # TODO
     print("POST")
-    # TODO
 
 
 # This function prints a list of all commands the server accepts to the client
@@ -83,5 +81,5 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
                 threads.append(t)
                 print(len(threads))
             except KeyboardInterrupt:
-                print("DONe")
+                print("Done")
                 socket.close()
