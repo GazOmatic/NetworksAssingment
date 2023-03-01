@@ -7,14 +7,15 @@ PORT = 3000
 
 def processHeader(message, conn):
     print(f"Client: {message}")
-    if message.split("#")[0] == "LIST":
-        actionList(message)
-    elif message.split("#")[0] == "GET":
-        actionGet(message)
-    elif message.split("#")[0] == "POST":
-        actionPost(message)
-    elif message.split("#")[0] == "HELP":
-        actionHelp(message)
+    msg = message.split("#")
+    if msg[0] == "LIST":
+        actionList(msg)
+    elif msg[0] == "GET":
+        actionGet(msg)
+    elif msg[0] == "POST":
+        actionPost(msg)
+    elif msg[0] == "HELP":
+        actionHelp(msg)
     else:
         conn.sendall("Unknown Server Command".encode())
     output = "Output"
@@ -23,14 +24,14 @@ def processHeader(message, conn):
 
 # This method lists all files to the client
 def actionList(message):
-    if message.split("#")[1] == "":
+    if message[1] == "":
         fileList = ""
         files = os.listdir("Files/")
         for f in files:
             fileList += f + "\n"
 
         conn.sendall(fileList.encode())
-    elif message.split("#")[1] == "ACCESS":
+    elif message[1] == "ACCESS":
         conn.sendall("List all files I have access to".encode())
     else:
         conn.sendall("Unknown Server Command".encode())
@@ -38,6 +39,18 @@ def actionList(message):
 
 def actionGet(message):  # TODO
     print("GET")
+    filename = "Files/" + message[1]
+    with open(filename,"rb") as fileToSend:
+        fileSize = os.path.getsize(filename) # Get the size of the file to send
+        conn.send(str(fileSize).encode()) # Send the size of the file through
+        bytesSent = 0
+        while bytesSent < fileSize:
+            remainingBytesToSend = fileSize - bytesSent # Determine how many bytes are left to send
+            amoutToSend = min(remainingBytesToSend, 1024) # Send the size of the file. If the size of the file is less than the normal bytes size to send then send the byte size
+            bytesSent += conn.sendfile(fileToSend,bytesSent,amoutToSend)
+            
+            conn.sendfile(fileToSend)
+
 
 
 def actionPost(message):  # TODO

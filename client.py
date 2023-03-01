@@ -14,17 +14,24 @@ print("Welcome to CLS File Sharing Platform")
 print("Type HELP for list of commands")
 
 
+def get():
+    header = "GET#zero.py#"
+    return header
+
+
 while True:
     # Receive data from the server
     received_data = sock.recv(1024).decode()
     print(f"Server: {received_data}")
 
     # Send data to server
-    message = input(":")
+    # message = input(":")
+
+    message = get()
     if len(message) == 0:
         message = "#"
     #
     sock.sendall(message.encode())
-
+    input("#")
 
 sock.close()
