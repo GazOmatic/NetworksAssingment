@@ -16,7 +16,7 @@ def clientThread(conn: socket.socket):
         # create a new connection manager and set to not sending
         man = connectionManager(False, conn, BATCH)
         while True:
-            out = man.next("Hello world")
+            out = man.next("Hello world")   
             if out == 0:  # If it could not send the data, terminate the current thread
                 threads = threads - 1  # Decrement the thread count
                 break  # Escape the loop if message failed
