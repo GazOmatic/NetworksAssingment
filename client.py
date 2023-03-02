@@ -2,6 +2,9 @@ import socket
 import time
 import os
 from connectionManager import connectionManager
+import tkinter
+from tkinter import filedialog
+from os import chdir, getcwd
 # Create a socket object
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -19,12 +22,34 @@ def get(filename: str):
     print(man.next("GET#zero.py#"))
 
 
-def listFiles(dir: str):
+def listFiles():
     fileList = ""
-    files = os.listdir(dir)
+    files = os.listdir(DIRECTORY)
     for f in files:
         fileList += f + "\n"
 
+    print(fileList)
+
+
+print("Change Directory or use default? (c/d)")
+a = input(":")
+# set default directory to current directory
+DIRECTORY = getcwd()
+
+if (a.lower() == 'c'):
+    root = tkinter.Tk()
+    root.wm_withdraw()
+    DIRECTORY = filedialog.askdirectory()
+    root.destroy()
+# error checking
+elif (a.lower() == 'c'):
+    pass
+# error checking
+else:
+    print("ERROR - Please input c for change or d for default")
+dir = getcwd()
+print(dir)
+chdir('../')
 
 # Connect to the server
 print("Welcome to CLS File Sharing Platform")
@@ -38,4 +63,4 @@ while command != 'q':
     if command == 'GET':
         get("Files/zero.py")
     if command == 'LIST':
-        listFiles("C:\Users\richa\OneDrive\Desktop\Computer Science")
+        listFiles()
