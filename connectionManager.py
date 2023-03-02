@@ -1,5 +1,4 @@
 import socket
-import logging
 
 class connectionManager:
     def __init__(self, sending: bool, sock: socket.socket, BATCH: int) -> None:
@@ -35,3 +34,8 @@ class connectionManager:
             print("Connection aborted")
             return 0
         return 1
+
+    def createHeader(command: str, arg1: str, arg2: str, data:str):
+        header = command + "#" + arg1 + "#" + arg2 + "#" + data + "%"
+        return header
+    

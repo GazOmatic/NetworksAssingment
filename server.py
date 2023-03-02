@@ -3,11 +3,10 @@ import threading
 import os
 import time
 from connectionManager import connectionManager
+# Globals
 controlHost = ""
 PORT = 3000
-
 BATCH = 1024
-
 threads = 0
 
 
