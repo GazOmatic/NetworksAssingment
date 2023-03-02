@@ -1,5 +1,6 @@
 import socket
 import time
+import os
 from connectionManager import connectionManager
 # Create a socket object
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -11,11 +12,19 @@ sending = True
 BATCH = 1024
 sock.connect((host, port))
 
-man = connectionManager(True,sock,BATCH)
+man = connectionManager(True, sock, BATCH)
 
-def get(filename:str):
+
+def get(filename: str):
     print(man.next("GET#zero.py#"))
-    
+
+
+def listFiles(dir: str):
+    fileList = ""
+    files = os.listdir(dir)
+    for f in files:
+        fileList += f + "\n"
+
 
 # Connect to the server
 print("Welcome to CLS File Sharing Platform")
@@ -27,4 +36,6 @@ while command != 'q':
     print("GET, LIST, TEST")
     command = input("#")
     if command == 'GET':
-          get("Files/zero.py")
+        get("Files/zero.py")
+    if command == 'LIST':
+        listFiles("C:\Users\richa\OneDrive\Desktop\Computer Science")
