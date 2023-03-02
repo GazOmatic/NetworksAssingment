@@ -18,7 +18,7 @@ class connectionManager:
         try:
             data = self.sock.recv(self.BATCH).decode()
         except ConnectionResetError:
-            print("Lost connection to client")
+            print("Error lost connection!")
             return 0
         except ConnectionAbortedError:
             return 0
@@ -28,7 +28,7 @@ class connectionManager:
         try:
             self.sock.sendall(data.encode())
         except ConnectionResetError:
-            print("Could not send data")
+            print("Error lost connection!")
             return 0
         except ConnectionAbortedError:
             print("Connection aborted")
