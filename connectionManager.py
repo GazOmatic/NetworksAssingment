@@ -1,6 +1,7 @@
 import socket
 
 class connectionManager:
+    latestMessage = ""
     def __init__(self, sending: bool, sock: socket.socket, BATCH: int) -> None:
         self.sending = sending
         self.sock = sock
@@ -12,7 +13,14 @@ class connectionManager:
             return self.send(data)
         else:
             self.sending = True
-            return self.receive(data)
+            self.latestMessage = self.receive(data)
+            return self.latestMessage
+        
+    def next(self,data:str,BATCH:int): # Method overload
+        currentBatch = self.BATCH
+        self.BATCH = BATCH
+        self.next(data)
+        self.BATCH = currentBatch
 
     def receive(self, data: str):  # Function that will receive data
         try:
