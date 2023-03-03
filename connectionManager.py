@@ -1,10 +1,11 @@
 import socket
+BATCH = 4096
 
 
 class connectionManager:
     latestMessage = ""
 
-    def __init__(self, sending: bool, sock: socket.socket, BATCH: int) -> None:
+    def __init__(self, sending: bool, sock: socket.socket, BATCH=4096) -> None:
         self.sending = sending
         self.sock = sock
         self.BATCH = BATCH
@@ -18,9 +19,9 @@ class connectionManager:
             self.latestMessage = self.receive(data)
             return self.latestMessage
 
-    def receive(self, BATCH:int):  # Function that will receive data
+    def receive(self, BATCH=BATCH):  # Function that will receive data
         try:
-            data = self.sock.recv(BATCH).decode()
+            data = self.sock.recv(self.BATCH)
         except ConnectionResetError:
             print("Error lost connection!")
             return 0
@@ -30,7 +31,9 @@ class connectionManager:
 
     def send(self, data: str):  # Function that will send the data
         try:
-            self.sock.sendall(data.encode())
+            if type(data) != bytes:
+                data = data.encode()
+            self.sock.sendall(data)
         except ConnectionResetError:
             print("Error lost connection!")
             return 0

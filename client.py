@@ -12,19 +12,21 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = 'localhost'  # The remote host IP address
 port = 3000       # The remote host port number
 sending = True
-BATCH = 1024
 sock.connect((host, port))
 
-man = connectionManager(True, sock, BATCH)
+man = connectionManager(True, sock)
 
 
-def get(filename: str):
-    print(man.send("GET#zero.py#"))
-    
-    size = man.receive(1024)
-    print("Got size : " + size)
-    f = man.receive(int(size.decode()))
-    print(f)
+def get(filename: str, dir: str):
+    print(man.send(f"GET#{filename}#"))
+    size = int(man.receive(20).decode())-20
+    received = 0
+    with open(DIRECTORY + filename, "wb") as f:
+        while received < size:
+            received += man.BATCH
+            f.write(man.receive())
+            print(f"{(received/size)*100}%")
+        print(f"Rec: {received} and size : {size} diff = {received-size}")
 
 
 def listFiles():
@@ -40,6 +42,7 @@ print("Change Directory or use default? (c/d)")
 a = input(":")
 # set default directory to current directory
 DIRECTORY = getcwd()
+DIRECTORY = "R:/"
 
 if (a.lower() == 'c'):
     root = tkinter.Tk()
@@ -66,6 +69,7 @@ while command != 'q':
     print("GET, LIST, TEST")
     command = input("#")
     if command == 'GET':
-        get("Files/zero.py")
+        get(input("Filename:"), DIRECTORY)
+
     if command == 'LIST':
         listFiles()

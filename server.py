@@ -3,37 +3,41 @@ import threading
 import os
 import time
 from connectionManager import connectionManager
+from fileManager import fileManager
 # Globals
 controlHost = ""
 PORT = 3000
-BATCH = 1024
 threads = 0
 
 
 
-def process(header:str):
+def process(header:bytes,man:connectionManager):
+    if type(header) == bytes:
+        header = header.decode()
     comm = header.split("#")
     if comm[0] == "GET":
-        get()
-
-def process(header:str):
-    comm = header.split("#")
-    if comm[0] == "GET":
-        get()
+        size = os.path.getsize("Files/" + comm[1])
+        man.send(str(size))
+        fm = fileManager(comm[1],man.BATCH)
+        while fm.chunk == fm.chunkSize:
+            if man.send(fm.getChunk()) == 0:
+                break
+        print("Sent file")
+        
 
 def clientThread(conn: socket.socket):
     global threads
     with conn:
         # create a new connection manager and set to not sending
-        man = connectionManager(False, conn, BATCH)
+        man = connectionManager(False, conn, man.BATCH)
         while True:
-            out = man.receive(1024)
+            out = man.receive()
             print(out)
-
             if out == 0:  # If it could not send the data, terminate the current thread
                 threads = threads - 1  # Decrement the thread count
                 break  # Escape the loop if message failed
-
+            process(out,man)
+            
 
 # Begining of the server
 
