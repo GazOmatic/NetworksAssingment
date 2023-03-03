@@ -9,7 +9,6 @@ PORT = 3000
 BATCH = 1024
 threads = 0
 
-def get(filename):
 
 
 def process(header:str):
