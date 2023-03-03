@@ -10,13 +10,20 @@ BATCH = 1024
 threads = 0
 
 
+def process(header:str):
+    comm = header.split("#")
+    if comm[0] == "GET":
+        get()
+
 def clientThread(conn: socket.socket):
     global threads
     with conn:
         # create a new connection manager and set to not sending
         man = connectionManager(False, conn, BATCH)
         while True:
-            out = man.next("Hello world")   
+            out = man.receive(1024)
+            print(out)
+
             if out == 0:  # If it could not send the data, terminate the current thread
                 threads = threads - 1  # Decrement the thread count
                 break  # Escape the loop if message failed
