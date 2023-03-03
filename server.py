@@ -9,6 +9,13 @@ PORT = 3000
 BATCH = 1024
 threads = 0
 
+def get(filename):
+
+
+def process(header:str):
+    comm = header.split("#")
+    if comm[0] == "GET":
+        get()
 
 def process(header:str):
     comm = header.split("#")
