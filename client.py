@@ -30,17 +30,16 @@ def get(filename: str, dir: str):
             f.write(chunk)
             received += len(chunk)
             print(f"{(received/size)*100}%")
-            
+
         # print(f"Rec: {received} and size : {size} diff = {received-size}")
 
 
 def listFiles():
-    fileList = ""
-    files = os.listdir(DIRECTORY)
+    print(man.send(f"LIST#{dir}#"))
+    files = man.receive().decode().split("#")
     for f in files:
-        fileList += f + "\n"
-
-    print(fileList)
+        print(f)
+        
 
 
 print("Change Directory or use default? (c/d)")
@@ -71,10 +70,10 @@ print("Type HELP for list of commands")
 
 command = ''
 while command != 'q':
-    print("GET, LIST, TEST")
+    print("GET (g), LIST (l)")
     command = input("#")
-    if command == 'GET':
+    if command == 'g':
         get(input("Filename:"), DIRECTORY)
 
-    if command == 'LIST':
+    if command == 'l':
         listFiles()

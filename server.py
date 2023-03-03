@@ -17,12 +17,17 @@ def process(header: bytes, man: connectionManager):
     if comm[0] == "GET":
         size = os.path.getsize("Files/" + comm[1])
         man.send(str(size))
-        fm = fileManager(comm[1], man.BATCH, "rb")
+        fm = fileManager(comm[1])
         while fm.chunk == fm.chunkSize:
             if man.send(fm.getChunk()) == 0:
                 break
         print("Sent file")
-
+    if comm[0] == "LIST":
+        files = os.listdir(os.getcwd()+"/Files")
+        out = ""
+        for item in files:
+            out += item + "#"
+        man.send(out)
 
 def clientThread(conn: socket.socket):
     global threads
