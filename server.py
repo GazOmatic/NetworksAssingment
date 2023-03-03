@@ -29,7 +29,7 @@ def clientThread(conn: socket.socket):
     global threads
     with conn:
         # create a new connection manager and set to not sending
-        man = connectionManager(False, conn, man.BATCH)
+        man = connectionManager(False, conn)
         while True:
             out = man.receive()
             print(out)

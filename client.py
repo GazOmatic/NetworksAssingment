@@ -2,6 +2,7 @@ import socket
 import time
 import os
 from connectionManager import connectionManager
+from fileManager import fileManager
 import tkinter
 from tkinter import filedialog
 from os import chdir, getcwd
@@ -19,14 +20,17 @@ man = connectionManager(True, sock)
 
 def get(filename: str, dir: str):
     print(man.send(f"GET#{filename}#"))
-    size = int(man.receive(20).decode())-20
+    size = man.receive(20)
+    size = int(size.decode())
+    print(f"Size is {size}")
     received = 0
     with open(DIRECTORY + filename, "wb") as f:
         while received < size:
-            received += man.BATCH
-            f.write(man.receive())
+            chunk = man.receive()
+            f.write(chunk)
+            received += len(chunk)
             print(f"{(received/size)*100}%")
-        print(f"Rec: {received} and size : {size} diff = {received-size}")
+        # print(f"Rec: {received} and size : {size} diff = {received-size}")
 
 
 def listFiles():
