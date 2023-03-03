@@ -19,7 +19,12 @@ man = connectionManager(True, sock, BATCH)
 
 
 def get(filename: str):
-    print(man.next("GET#zero.py#"))
+    print(man.send("GET#zero.py#"))
+    
+    size = man.receive(1024)
+    print("Got size : " + size)
+    f = man.receive(int(size.decode()))
+    print(f)
 
 
 def listFiles():
