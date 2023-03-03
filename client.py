@@ -46,7 +46,7 @@ print("Change Directory or use default? (c/d)")
 a = input(":")
 # set default directory to current directory
 DIRECTORY = getcwd()
-DIRECTORY = "R:/"
+#DIRECTORY = "R:/"
 
 if (a.lower() == 'c'):
     root = tkinter.Tk()
