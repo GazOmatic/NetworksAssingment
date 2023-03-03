@@ -10,20 +10,19 @@ PORT = 3000
 threads = 0
 
 
-
-def process(header:bytes,man:connectionManager):
+def process(header: bytes, man: connectionManager):
     if type(header) == bytes:
         header = header.decode()
     comm = header.split("#")
     if comm[0] == "GET":
         size = os.path.getsize("Files/" + comm[1])
         man.send(str(size))
-        fm = fileManager(comm[1],man.BATCH)
+        fm = fileManager(comm[1], man.BATCH, "rb")
         while fm.chunk == fm.chunkSize:
             if man.send(fm.getChunk()) == 0:
                 break
         print("Sent file")
-        
+
 
 def clientThread(conn: socket.socket):
     global threads
@@ -36,8 +35,8 @@ def clientThread(conn: socket.socket):
             if out == 0:  # If it could not send the data, terminate the current thread
                 threads = threads - 1  # Decrement the thread count
                 break  # Escape the loop if message failed
-            process(out,man)
-            
+            process(out, man)
+
 
 # Begining of the server
 

@@ -30,6 +30,7 @@ def get(filename: str, dir: str):
             f.write(chunk)
             received += len(chunk)
             print(f"{(received/size)*100}%")
+            
         # print(f"Rec: {received} and size : {size} diff = {received-size}")
 
 
