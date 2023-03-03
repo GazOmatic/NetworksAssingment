@@ -35,6 +35,8 @@ def clientThread(conn: socket.socket):
                 break  # Escape the loop if message failed
 
 
+# Begining of the server
+
 def main():
     global threads, controlHost
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
