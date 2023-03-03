@@ -15,7 +15,11 @@ def process(header: bytes, man: connectionManager):
         header = header.decode()
     comm = header.split("#")
     if comm[0] == "GET":
-        size = os.path.getsize("Files/" + comm[1])
+        try:
+            size = os.path.getsize("Files/" + comm[1])
+        except FileNotFoundError:
+            man.send("-1")
+            return ""
         man.send(str(size))
         fm = fileManager(comm[1])
         while fm.chunk == fm.chunkSize:
@@ -28,6 +32,7 @@ def process(header: bytes, man: connectionManager):
         for item in files:
             out += item + "#"
         man.send(out)
+
 
 def clientThread(conn: socket.socket):
     global threads

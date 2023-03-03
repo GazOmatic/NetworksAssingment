@@ -22,6 +22,9 @@ def get(filename: str, dir: str):
     print(man.send(f"GET#{filename}#"))
     size = man.receive(20)
     size = int(size.decode())
+    if size == -1:
+        print("404 - File not found")
+        return ""
     print(f"Size is {size}")
     received = 0
     with open(DIRECTORY + filename, "wb") as f:
@@ -39,11 +42,10 @@ def listFiles():
     files = man.receive().decode().split("#")
     for f in files:
         print(f)
-        
 
 
-print("Change Directory or use default? (c/d)")
-a = input(":")
+print("Change Directory (c) or use default? (d)")
+a = input("#")
 # set default directory to current directory
 DIRECTORY = getcwd()
 #DIRECTORY = "R:/"
