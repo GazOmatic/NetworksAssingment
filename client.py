@@ -33,7 +33,7 @@ def get(filename: str, dir: str):
         # print(f"Rec: {received} and size : {size} diff = {received-size}")
 
 
-def listFiles():
+def listMyFiles():
     fileList = ""
     files = os.listdir(DIRECTORY)
     for f in files:
@@ -46,7 +46,7 @@ print("Change Directory or use default? (c/d)")
 a = input(":")
 # set default directory to current directory
 DIRECTORY = getcwd()
-DIRECTORY = "R:/"
+#DIRECTORY = "R:/"
 
 if (a.lower() == 'c'):
     root = tkinter.Tk()
@@ -75,5 +75,6 @@ while command != 'q':
     if command == 'GET':
         get(input("Filename:"), DIRECTORY)
 
+    # TODO Add ability to list my files or server files
     if command == 'LIST':
-        listFiles()
+        listMyFiles()
