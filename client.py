@@ -75,6 +75,7 @@ def myFiles():
 
 
 def upload():
+    root.call('wm', 'attributes', '.', '-topmost', True)
     filename = filedialog.askopenfilename()
     print(filename)
 
@@ -102,12 +103,11 @@ a = input("#")
 # set default directory to current directory
 DIRECTORY = getcwd()
 #DIRECTORY = "R:/"
-
+root = tkinter.Tk()
+root.wm_withdraw()
 if (a.lower() == 'c'):
-    root = tkinter.Tk()
-    root.wm_withdraw()
+    root.call('wm', 'attributes', '.', '-topmost', True)
     DIRECTORY = filedialog.askdirectory()
-    root.destroy()
 # error checking
 elif (a.lower() == 'c'):
     pass
