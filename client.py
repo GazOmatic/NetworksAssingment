@@ -73,6 +73,7 @@ def myFiles():
     print("Local Directory: \n")
     print(out)
 
+
 def deleteFile():
     print("Enter filename to remove:")
     filename = input(": ")
@@ -82,7 +83,7 @@ def deleteFile():
 def upload():
     root.call('wm', 'attributes', '.', '-topmost', True)
     filename = filedialog.askopenfilename()
-    if filename == "": # If no file given excape the function
+    if filename == "":  # If no file given excape the function
         return
     print(filename)
 
@@ -138,7 +139,9 @@ while command != 'q':
     if command == 'd':
         listFiles()
         print("Enter Filename:")
-        get(input("#"), DIRECTORY)
+        filename = input("#")
+        if filename != '':
+            get(filename, DIRECTORY)
 
     if command[0] == 'l':
         listFiles()
