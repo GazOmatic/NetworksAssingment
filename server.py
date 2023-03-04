@@ -32,6 +32,9 @@ def process(header: bytes, man: connectionManager):
         for item in files:
             out += item + "#"
         man.send(out)
+    if comm[0] == "POST":
+        print("Preparing for upload")
+                         
 
 
 def clientThread(conn: socket.socket):
