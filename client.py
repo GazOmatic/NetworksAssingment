@@ -28,11 +28,15 @@ def get(filename: str, dir: str):
     print(f"Size is {size}")
     received = 0
     with open(DIRECTORY + filename, "wb") as f:
+        prev = 0
         while received < size:
             chunk = man.receive()
             f.write(chunk)
             received += len(chunk)
-            print(f"{(received/size)*100}%")
+            percent = round((received/size)*100, 1)
+            if percent - prev > 1:
+                print(f"{percent}%")
+                prev = percent            
 
         # print(f"Rec: {received} and size : {size} diff = {received-size}")
 
