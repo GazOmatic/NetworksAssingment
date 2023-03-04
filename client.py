@@ -33,7 +33,7 @@ man = connectionManager(True, sock)
 
 
 def get(filename: str, dir: str):
-    print(man.send(f"GET#{filename}#"))
+    man.send(f"GET#{filename}#")
     size = man.receive(20)
     size = int(size.decode())
     if size == -1:
@@ -124,6 +124,7 @@ while command != 'q':
         command = ' '
     os.system("cls")
     if command == 'g':
+        listFiles()
         print("Enter Filename:")
         get(input("#"), DIRECTORY)
 
