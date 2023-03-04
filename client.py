@@ -120,6 +120,7 @@ command = ''
 while command != 'q':
     print("GET (g), LIST (l)")
     command = input("#")
+    os.system("cls")
     if command == 'g':
         print("Enter Filename:")
         get(input("#"), DIRECTORY)
