@@ -157,3 +157,4 @@ while command != 'q':
     if command[0] == 'h':
         print("HELP MENU\n----------------\nUpload - (u)\nDownload - (d)")
         print("List Server Directory - (l)\nList My Directory - (m)\nHelp - (h)")  # q,
+        print("Change Directory - (c)")
