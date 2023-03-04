@@ -73,6 +73,11 @@ def myFiles():
     print("Local Directory: \n")
     print(out)
 
+def deleteFile():
+    print("Enter filename to remove:")
+    filename = input(": ")
+    man.send(f"DELETE#{filename}#")
+
 
 def upload():
     root.call('wm', 'attributes', '.', '-topmost', True)
@@ -141,6 +146,9 @@ while command != 'q':
         upload()
     if command[0] == 'm':
         myFiles()
+    if command[0] == 'r':
+        listFiles()
+        deleteFile()
     if command[0] == 'h':
         print("HELP MENU\n----------------\nUpload - (u)\nDownload - (d)")
         print("List Server Directory - (l)\nList My Directory - (m)\nHelp - (h)")  # q,

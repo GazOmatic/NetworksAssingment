@@ -50,6 +50,13 @@ def process(header: bytes, man: connectionManager):
                 if percent - prev > 1:
                     print(f"{percent}%")
                     prev = percent
+    if comm[0] == "DELETE":
+        if comm[1] == '':
+            return
+        print("Deleting file " + comm[1])
+        os.remove("Files/" + comm[1])
+
+
 
 
 def clientThread(conn: socket.socket):
