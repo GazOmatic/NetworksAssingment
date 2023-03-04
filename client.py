@@ -54,7 +54,7 @@ def get(filename: str, dir: str):
     checksum = getChecksum(DIRECTORY + filename)
     print(f"Local : {checksum} + Remote : {header[1]}")
     if header[1] == checksum:
-        print("Checksum match") 
+        print("Checksum match")
         # print(f"Rec: {received} and size : {size} diff = {received-size}")
 
 
@@ -104,26 +104,28 @@ def upload():
     print(man.receive().decode())
 
 
-print("Change Directory (c) or use default? (d)")
-a = input("#")
-# set default directory to current directory
 DIRECTORY = getcwd()
-#DIRECTORY = "R:/"
-root = tkinter.Tk()
-root.wm_withdraw()
-if (a.lower() == 'c'):
-    root.call('wm', 'attributes', '.', '-topmost', True)
-    DIRECTORY = filedialog.askdirectory()
-# error checking
-elif (a.lower() == 'c'):
-    pass
-# error checking
-else:
-    print("ERROR - Please input c for change or d for default")
-dir = getcwd()
-print(dir)
-chdir('../')
+def changeDir():
+    print("Change Directory (c) or use default? (d)")
+    a = input("#")
+    # set default directory to current directory
+    #DIRECTORY = "R:/"
+    root = tkinter.Tk()
+    root.wm_withdraw()
+    if (a.lower() == 'c'):
+        root.call('wm', 'attributes', '.', '-topmost', True)
+        DIRECTORY = filedialog.askdirectory()
+    # error checking
+    elif (a.lower() == 'c'):
+        pass
+    # error checking
+    else:
+        print("ERROR - Please input c for change or d for default")
+    dir = getcwd()
+    print(dir)
+    chdir('../')
 
+changeDir()
 # Connect to the server
 print("Welcome to CLS File Sharing Platform")
 print("Type (h) for list of commands")
@@ -150,6 +152,8 @@ while command != 'q':
     if command[0] == 'r':
         listFiles()
         deleteFile()
+    if command[0] == 'c':
+        changeDir()
     if command[0] == 'h':
         print("HELP MENU\n----------------\nUpload - (u)\nDownload - (d)")
         print("List Server Directory - (l)\nList My Directory - (m)\nHelp - (h)")  # q,
