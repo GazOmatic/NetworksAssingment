@@ -17,12 +17,15 @@ sending = True
 
 while True:
     print("Attempting connection...")
-    time.sleep(1)
     try:
         sock.connect((host, port))
         break
     except ConnectionRefusedError:
+        time.sleep(1)
         continue
+    except KeyboardInterrupt:
+        break
+    
 
 man = connectionManager(True, sock)
 

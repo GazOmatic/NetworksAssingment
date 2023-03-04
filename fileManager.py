@@ -3,7 +3,7 @@ import time
 
 class fileManager:
     def __init__(self, filename: str, chunkSize=4096, write=False) -> None:
-        self.filename = "Files/" + filename
+        self.filename = filename
         self.chunkSize = chunkSize
         b = 'rb'
         if write:
