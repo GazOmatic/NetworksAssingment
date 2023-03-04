@@ -56,7 +56,7 @@ def get(filename: str, dir: str):
 
 
 def listFiles():
-    print(man.send(f"LIST#{dir}#"))
+    man.send(f"LIST#{dir}#")
     files = man.receive().decode().split("#")
     print("Server Direcory: \n")
     for f in files:
@@ -115,15 +115,13 @@ chdir('../')
 print("Welcome to CLS File Sharing Platform")
 print("Type HELP for list of commands")
 
-
 command = ''
 while command != 'q':
-    print("GET (g), LIST (l)")
     command = input("#")
     if len(command) == 0:
         command = ' '
     os.system("cls")
-    if command == 'g':
+    if command == 'd':
         listFiles()
         print("Enter Filename:")
         get(input("#"), DIRECTORY)
@@ -132,5 +130,8 @@ while command != 'q':
         listFiles()
     if command[0] == 'u':
         upload()
-    if command[0] == 'x':
+    if command[0] == 'm':
         myFiles()
+    if command[0] == 'h':
+        print("HELP MENU\n----------------\nUpload - (u)\nDownload - (d)")
+        print("List Server Directory - (l)\nList My Directory - (m)\nHelp - (h)")  # q,
