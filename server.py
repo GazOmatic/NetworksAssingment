@@ -82,7 +82,7 @@ def main():
                 client.daemon = True
                 client.start()
                 # Naming of threads for debugging reasons
-                threads = threading.active_count()
+                threads = threading.active_count()-1
                 client.name = f"Client{threads}"
                 print(f"Active Clients {threads}")
             except KeyboardInterrupt:

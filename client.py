@@ -13,7 +13,16 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = 'localhost'  # The remote host IP address
 port = 3000       # The remote host port number
 sending = True
-sock.connect((host, port))
+
+
+while True:
+    print("Attempting connection...")
+    time.sleep(1)
+    try:
+        sock.connect((host, port))
+        break
+    except ConnectionRefusedError:
+        continue
 
 man = connectionManager(True, sock)
 
