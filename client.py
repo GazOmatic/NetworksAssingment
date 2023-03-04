@@ -20,6 +20,7 @@ while True:
     print("Attempting connection...")
     try:
         sock.connect((host, port))
+        print("Connected!")
         break
     except ConnectionRefusedError:
         time.sleep(1)
@@ -120,7 +121,8 @@ while command != 'q':
     print("GET (g), LIST (l)")
     command = input("#")
     if command == 'g':
-        get(input("Filename:"), DIRECTORY)
+        print("Enter Filename:")
+        get(input("#"), DIRECTORY)
 
     if command[0] == 'l':
         listFiles()
