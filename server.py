@@ -3,7 +3,7 @@ import threading
 import os
 import time
 from connectionManager import connectionManager
-from fileManager import fileManager
+from fileManager import fileManager, getChecksum
 # Globals
 controlHost = ""
 PORT = 3000
@@ -50,13 +50,16 @@ def process(header: bytes, man: connectionManager):
                 if percent - prev > 1:
                     print(f"{percent}%")
                     prev = percent
+        checksum = getChecksum("Files/" + comm[1])
+        if comm[3] == checksum:
+            print("Checksum Match - File was not altered in transit")
+        else:
+            print("ERROR CHECKSUM MISMATCH - File was altered in Transit")
     if comm[0] == "DELETE":
         if comm[1] == '':
             return
         print("Deleting file " + comm[1])
         os.remove("Files/" + comm[1])
-
-
 
 
 def clientThread(conn: socket.socket):
