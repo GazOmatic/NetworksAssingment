@@ -113,7 +113,7 @@ chdir('../')
 
 # Connect to the server
 print("Welcome to CLS File Sharing Platform")
-print("Type HELP for list of commands")
+print("Type (h) for list of commands")
 
 command = ''
 while command != 'q':
