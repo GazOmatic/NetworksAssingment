@@ -36,7 +36,7 @@ def get(filename: str, dir: str):
             percent = round((received/size)*100, 1)
             if percent - prev > 1:
                 print(f"{percent}%")
-                prev = percent            
+                prev = percent
 
         # print(f"Rec: {received} and size : {size} diff = {received-size}")
 
@@ -46,6 +46,22 @@ def listFiles():
     files = man.receive().decode().split("#")
     for f in files:
         print(f)
+
+
+def upload():
+    filename = filedialog.askopenfilename()
+    print(filename)
+    try:
+        size = os.path.getsize(filename)
+    except FileNotFoundError:
+        man.send("-1")
+        return ""
+    man.send("POST#" + filename.split("/")[-1] + "#" + str(size))
+    fm = fileManager(filename)
+    while fm.chunk == fm.chunkSize:
+        if man.send(fm.getChunk()) == 0:
+            break
+    print("Successfully sent file " + filename)
 
 
 print("Change Directory (c) or use default? (d)")
@@ -81,5 +97,7 @@ while command != 'q':
     if command == 'g':
         get(input("Filename:"), DIRECTORY)
 
-    if command == 'l':
+    if command[0] == 'l':
         listFiles()
+    if command[0] == 'u':
+        upload()

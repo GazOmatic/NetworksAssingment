@@ -7,7 +7,6 @@ from fileManager import fileManager
 # Globals
 controlHost = ""
 PORT = 3000
-threads = 0
 
 
 def process(header: bytes, man: connectionManager):
@@ -25,7 +24,7 @@ def process(header: bytes, man: connectionManager):
         while fm.chunk == fm.chunkSize:
             if man.send(fm.getChunk()) == 0:
                 break
-        print("Sent file")
+        print("Successfully sent file " + comm[1])
     if comm[0] == "LIST":
         files = os.listdir(os.getcwd()+"/Files")
         out = ""
@@ -34,11 +33,26 @@ def process(header: bytes, man: connectionManager):
         man.send(out)
     if comm[0] == "POST":
         print("Preparing for upload")
-                         
+        filename = comm[1]
+        size = int(comm[2])
+        if size == -1:
+            print("404 - File not found")
+            return ""
+        print(f"Size is {size}")
+        received = 0
+        with open("Files/" + filename, "wb") as f:
+            prev = 0
+            while received < size:
+                chunk = man.receive()
+                f.write(chunk)
+                received += len(chunk)
+                percent = round((received/size)*100, 1)
+                if percent - prev > 1:
+                    print(f"{percent}%")
+                    prev = percent
 
 
 def clientThread(conn: socket.socket):
-    global threads
     with conn:
         # create a new connection manager and set to not sending
         man = connectionManager(False, conn)
@@ -46,8 +60,9 @@ def clientThread(conn: socket.socket):
             out = man.receive()
             print(out)
             if out == 0:  # If it could not send the data, terminate the current thread
-                threads = threads - 1  # Decrement the thread count
                 break  # Escape the loop if message failed
+            if not out:
+                break
             process(out, man)
 
 
@@ -67,8 +82,8 @@ def main():
                 client.daemon = True
                 client.start()
                 # Naming of threads for debugging reasons
+                threads = threading.active_count()
                 client.name = f"Client{threads}"
-                threads = threads + 1
                 print(f"Active Clients {threads}")
             except KeyboardInterrupt:
                 print("Done")
