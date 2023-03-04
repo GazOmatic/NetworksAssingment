@@ -6,6 +6,7 @@ from fileManager import fileManager
 import tkinter
 from tkinter import filedialog
 from os import chdir, getcwd
+import hashlib
 # Create a socket object
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -25,7 +26,7 @@ while True:
         continue
     except KeyboardInterrupt:
         break
-    
+
 
 man = connectionManager(True, sock)
 
@@ -56,8 +57,20 @@ def get(filename: str, dir: str):
 def listFiles():
     print(man.send(f"LIST#{dir}#"))
     files = man.receive().decode().split("#")
+    print("Server Direcory: \n")
     for f in files:
         print(f)
+
+# Lists all files in client directory
+
+
+def myFiles():
+    files = os.listdir(DIRECTORY)
+    out = ""
+    for item in files:
+        out += item + "\n"
+    print("Local Directory: \n")
+    print(out)
 
 
 def upload():
@@ -113,3 +126,5 @@ while command != 'q':
         listFiles()
     if command[0] == 'u':
         upload()
+    if command[0] == 'x':
+        myFiles()
