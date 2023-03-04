@@ -1,4 +1,5 @@
 import time
+import hashlib
 
 
 class fileManager:
@@ -18,3 +19,13 @@ class fileManager:
 
     def close(self):
         self.target.close()
+
+
+def getChecksum(filename: str):
+    print(filename)
+
+    hasher = hashlib.md5()
+    with open(filename, 'rb') as open_file:
+        content = open_file.read()
+        hasher.update(content)
+    return hasher.hexdigest()

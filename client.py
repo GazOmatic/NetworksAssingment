@@ -2,11 +2,10 @@ import socket
 import time
 import os
 from connectionManager import connectionManager
-from fileManager import fileManager
+from fileManager import fileManager, getChecksum
 import tkinter
 from tkinter import filedialog
 from os import chdir, getcwd
-import hashlib
 # Create a socket object
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -86,19 +85,14 @@ def upload():
     if filename == "":  # If no file given excape the function
         return
     print(filename)
-
-    hasher = hashlib.md5()
-    with open(filename, 'rb') as open_file:
-        content = open_file.read()
-        hasher.update(content)
-    print(hasher.hexidigest())
-
     try:
+        checksum = getChecksum(filename)
         size = os.path.getsize(filename)
     except FileNotFoundError:
         man.send("-1")
         return ""
-    man.send("POST#" + filename.split("/")[-1] + "#" + str(size))
+    man.send("POST#" + filename.split("/")
+             [-1] + "#" + str(size) + "#" + checksum)
     fm = fileManager(filename)
     while fm.chunk == fm.chunkSize:
         if man.send(fm.getChunk()) == 0:
