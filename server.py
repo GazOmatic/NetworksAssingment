@@ -20,7 +20,7 @@ def process(header: bytes, man: connectionManager):
             man.send("-1")
             return ""
         man.send(str(size))
-        fm = fileManager(comm[1])
+        fm = fileManager("Files/" + comm[1])
         while fm.chunk == fm.chunkSize:
             if man.send(fm.getChunk()) == 0:
                 break
