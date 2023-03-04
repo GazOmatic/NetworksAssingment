@@ -77,6 +77,8 @@ def myFiles():
 def upload():
     root.call('wm', 'attributes', '.', '-topmost', True)
     filename = filedialog.askopenfilename()
+    if filename == "": # If no file given excape the function
+        return
     print(filename)
 
     hasher = hashlib.md5()
