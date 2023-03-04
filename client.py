@@ -77,6 +77,13 @@ def myFiles():
 def upload():
     filename = filedialog.askopenfilename()
     print(filename)
+
+    hasher = hashlib.md5()
+    with open(filename, 'rb') as open_file:
+        content = open_file.read()
+        hasher.update(content)
+    print(hasher.hexidigest())
+
     try:
         size = os.path.getsize(filename)
     except FileNotFoundError:
