@@ -19,7 +19,8 @@ def process(header: bytes, man: connectionManager):
         except FileNotFoundError:
             man.send("-1")
             return ""
-        man.send(str(size))
+        checksum = getChecksum("Files/" + comm[1])
+        man.send(str(size) + "#" + checksum)
         fm = fileManager("Files/" + comm[1])
         while fm.chunk == fm.chunkSize:
             if man.send(fm.getChunk()) == 0:
@@ -53,6 +54,7 @@ def process(header: bytes, man: connectionManager):
         checksum = getChecksum("Files/" + comm[1])
         if comm[3] == checksum:
             print("Checksum Match - File was not altered in transit")
+            man.send("Success! - Checksum match")
         else:
             print("ERROR CHECKSUM MISMATCH - File was altered in Transit")
     if comm[0] == "DELETE":

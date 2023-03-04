@@ -33,8 +33,9 @@ man = connectionManager(True, sock)
 
 def get(filename: str, dir: str):
     man.send(f"GET#{filename}#")
-    size = man.receive(20)
-    size = int(size.decode())
+    header = man.receive().decode().split("#")
+    size = header[0]
+    size = int(size)
     if size == -1:
         print("404 - File not found")
         return ""
@@ -50,7 +51,10 @@ def get(filename: str, dir: str):
             if percent - prev > 1:
                 print(f"{percent}%")
                 prev = percent
-
+    checksum = getChecksum(DIRECTORY + filename)
+    print(f"Local : {checksum} + Remote : {header[1]}")
+    if header[1] == checksum:
+        print("Checksum match") 
         # print(f"Rec: {received} and size : {size} diff = {received-size}")
 
 
@@ -84,7 +88,6 @@ def upload():
     filename = filedialog.askopenfilename()
     if filename == "":  # If no file given excape the function
         return
-    print(filename)
     try:
         checksum = getChecksum(filename)
         size = os.path.getsize(filename)
@@ -98,6 +101,7 @@ def upload():
         if man.send(fm.getChunk()) == 0:
             break
     print("Successfully sent file " + filename)
+    print(man.receive().decode())
 
 
 print("Change Directory (c) or use default? (d)")
