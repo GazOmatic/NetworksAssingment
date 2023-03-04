@@ -120,7 +120,7 @@ command = ''
 while command != 'q':
     print("GET (g), LIST (l)")
     command = input("#")
-    if len(command == 0):
+    if len(command) == 0:
         command = ' '
     os.system("cls")
     if command == 'g':
