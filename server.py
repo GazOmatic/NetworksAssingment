@@ -26,13 +26,13 @@ def process(header: bytes, man: connectionManager):
             if man.send(fm.getChunk()) == 0:
                 break
         print("Successfully sent file " + comm[1])
-    if comm[0] == "LIST":
+    elif comm[0] == "LIST":
         files = os.listdir(os.getcwd()+"/Files")
         out = ""
         for item in files:
             out += item + "#"
         man.send(out)
-    if comm[0] == "POST":
+    elif comm[0] == "POST":
         print("Preparing for upload")
         filename = comm[1]
         size = int(comm[2])
@@ -59,7 +59,7 @@ def process(header: bytes, man: connectionManager):
             print("ERROR CHECKSUM MISMATCH - File was altered in Transit")
             print("Removing Altered/Corrupted File")
             os.remove("Files/" + filename)
-    if comm[0] == "DELETE":
+    elif comm[0] == "DELETE":
         if comm[1] == '':
             return
         print("Deleting file " + comm[1])
@@ -67,6 +67,9 @@ def process(header: bytes, man: connectionManager):
             os.remove("Files/" + comm[1])
         except FileNotFoundError:
             print("ERROR 404 - File not found")
+    else:
+        print("Invalid header")
+        man.send("ERROR - INVALID HEADER")
 
 
 def clientThread(conn: socket.socket):

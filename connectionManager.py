@@ -22,7 +22,10 @@ class connectionManager:
 
     def receive(self, BATCH=BATCH):  # Function that will receive data
         try:
-            data = self.decrypt(self.sock.recv(self.BATCH).decode())
+            data = self.sock.recv(BATCH).decode()
+            print(data)
+            data = self.decrypt(data)
+            print(data)
         except ConnectionResetError:
             print("Error lost connection!")
             return 0
@@ -32,11 +35,7 @@ class connectionManager:
 
     def send(self, data: str):  # Function that will send the data
         try:
-            if type(data) != bytes:
-                data = self.encrypt(data)
-                data = data.encode()
-
-            self.sock.sendall(data)
+            self.sock.sendall(self.encrypt(data).encode())
         except ConnectionResetError:
             print("Error lost connection!")
             return 0
@@ -72,7 +71,7 @@ class connectionManager:
             if char.isalpha():
                 # Shift the character by the inverse of the key, wrapping around if necessary
                 shifted_char = chr(
-                    (ord(char) - ord('a') - KEY) % 26 + ord('a'))
+                    (ord(char) - ord('a') + KEY) % 26 + ord('a'))
                 message += shifted_char
             else:
                 # Leave non-alphabetic characters unchanged

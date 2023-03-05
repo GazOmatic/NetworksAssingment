@@ -65,7 +65,7 @@ def get(filename: str, dir: str):
 
 def listFiles():
     man.send(f"LIST#{DIRECTORY}#")
-    files = man.receive().decode().split("#")
+    files = man.receive().split("#")
     print("Server Direcory: \n")
     for f in files:
         print(f)
