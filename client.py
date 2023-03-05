@@ -1,6 +1,7 @@
 import socket
 import time
 import os
+import json
 from connectionManager import connectionManager
 from fileManager import fileManager, getChecksum
 import tkinter
@@ -13,6 +14,8 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = 'localhost'  # The remote host IP address
 port = 3000       # The remote host port number
 sending = True
+protectedList = []
+protected = False
 
 
 while True:
@@ -29,9 +32,28 @@ while True:
 
 
 man = connectionManager(True, sock)
+code = passwordManager(False)
 
 
 def get(filename: str, dir: str):
+  
+   
+    with open(DIRECTORY + "/" +'passwords.json', 'r') as f:
+        file_passwords = json.load(f)
+        
+    #check if file is protected
+    file_to_find = filename
+    
+    if file_to_find in file_passwords:
+        print(f"File is protected")
+        passcode = input("Enter passcode:")
+        
+        if passcode == file_passwords[file_to_find]:
+            print("Password is correct")
+        else: 
+            print("Password is incorrect")
+            return ""      
+  
     man.send(f"GET#{filename}#")
     header = man.receive().decode().split("#")
     size = header[0]
@@ -84,16 +106,29 @@ def deleteFile():
 
 
 def upload():
+    root = tkinter.Tk()
+    root.wm_withdraw()
     root.call('wm', 'attributes', '.', '-topmost', True)
+    
+    print("Is the file open (o) or protected (p)?:")
+    security = input("#")
+    
+    if security == "p":
+        print("Enter passcode:")
+        passcode = input("#")
+        protected = True 
+    
     filename = filedialog.askopenfilename()
     if filename == "":  # If no file given excape the function
         return
+  
     try:
         checksum = getChecksum(filename)
         size = os.path.getsize(filename)
     except FileNotFoundError:
         man.send("-1")
-        return ""
+        return ""        
+    
     man.send("POST#" + filename.split("/")
              [-1] + "#" + str(size) + "#" + checksum)
     fm = fileManager(filename)
@@ -102,6 +137,9 @@ def upload():
             break
     print("Successfully sent file " + filename)
     print(man.receive().decode())
+    
+    if protected == True:
+        man.send("PASSWORD#" + os.path.basename(filename) + "#" + passcode)
 
 
 DIRECTORY = getcwd()
@@ -115,15 +153,17 @@ def changeDir():
     if (a.lower() == 'c'):
         root.call('wm', 'attributes', '.', '-topmost', True)
         DIRECTORY = filedialog.askdirectory()
+        chdir(DIRECTORY) #
     # error checking
-    elif (a.lower() == 'c'):
+    elif (a.lower() == 'd'):
         pass
     # error checking
     else:
         print("ERROR - Please input c for change or d for default")
     dir = getcwd()
     print(dir)
-    chdir('../')
+    #chdir('../')
+    print
 
 changeDir()
 # Connect to the server

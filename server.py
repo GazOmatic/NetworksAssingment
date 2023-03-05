@@ -2,11 +2,13 @@ import socket
 import threading
 import os
 import time
+import json
 from connectionManager import connectionManager
 from fileManager import fileManager, getChecksum
 # Globals
 controlHost = ""
 PORT = 3000
+
 
 
 def process(header: bytes, man: connectionManager):
@@ -26,6 +28,7 @@ def process(header: bytes, man: connectionManager):
             if man.send(fm.getChunk()) == 0:
                 break
         print("Successfully sent file " + comm[1])
+        
     if comm[0] == "LIST":
         files = os.listdir(os.getcwd()+"/Files")
         out = ""
@@ -62,6 +65,26 @@ def process(header: bytes, man: connectionManager):
             return
         print("Deleting file " + comm[1])
         os.remove("Files/" + comm[1])
+        
+    if comm[0] == "PASSWORD":
+        filename = comm[1]
+        passcode = comm[2]
+        
+        files = {filename: passcode}
+        
+        #if file is not empty
+        if os.path.isfile("passwords.json") and os.stat("passwords.json").st_size != 0:  
+            with open("passwords.json", "r") as f:
+                data = json.load(f)
+            new_data = {filename:passcode}
+            data.update(new_data)
+            
+            with open("passwords.json", "w") as f:
+                json.dump(data, f)
+            
+        else: 
+            with open("passwords.json", "w") as f:
+                json.dump(files, f)
 
 
 def clientThread(conn: socket.socket):
