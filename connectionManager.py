@@ -51,14 +51,8 @@ class connectionManager:
         global KEY
         ciphertext = ""
         for char in message:
-            if char.isalpha():
-                # Shift the character by the key, wrapping around if necessary
-                shifted_char = chr(
-                    (ord(char) - ord('a') + KEY) % 26 + ord('a'))
-                ciphertext += shifted_char
-            else:
-                # Leave non-alphabetic characters unchanged
-                ciphertext += char
+
+            ciphertext += chr(ord(char) + KEY)
         return ciphertext
 
     def decrypt(self, ciphertext: str):
@@ -68,12 +62,5 @@ class connectionManager:
         global KEY
         message = ""
         for char in ciphertext:
-            if char.isalpha():
-                # Shift the character by the inverse of the key, wrapping around if necessary
-                shifted_char = chr(
-                    (ord(char) - ord('a') + KEY) % 26 + ord('a'))
-                message += shifted_char
-            else:
-                # Leave non-alphabetic characters unchanged
-                message += char
+            message += chr(ord(char) - KEY)
         return message
