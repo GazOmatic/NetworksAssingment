@@ -7,6 +7,7 @@ import tkinter
 from tkinter import filedialog
 from os import chdir, getcwd
 # Create a socket object
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Define the address and port to connect to
