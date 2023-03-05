@@ -167,6 +167,8 @@ def changeDir():
     if (a.lower() == 'c'):
         root.call('wm', 'attributes', '.', '-topmost', True)
         DIRECTORY = filedialog.askdirectory()
+        if DIRECTORY == '':
+            DIRECTORY = getcwd()
         chdir(DIRECTORY) #
     # error checking
     elif (a.lower() == 'd'):

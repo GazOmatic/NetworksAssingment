@@ -42,7 +42,7 @@ class connectionManager:
             return 0
         return data
 
-    def send(self, data: str): 
+    def send(self, data: str):
         """Encrypt the given data and send it to the connected socket.
 
         Args:
@@ -63,12 +63,12 @@ class connectionManager:
 
     def encrypt(self, message: str):
         """
-        Encrypts a message using a shift cipher with the given key.
+        Encrypts a message using the Fernet library.
         """
         return self.f.encrypt(message)
 
     def decrypt(self, message: str):
         """
-        Decrypts a ciphertext using a shift cipher with the given key.
+        Decrypts a message using the Fernet Library.
         """
         return self.f.decrypt(message)
