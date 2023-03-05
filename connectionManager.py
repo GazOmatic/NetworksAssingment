@@ -23,9 +23,7 @@ class connectionManager:
     def receive(self, BATCH=BATCH):  # Function that will receive data
         try:
             data = self.sock.recv(BATCH).decode()
-            print(data)
             data = self.decrypt(data)
-            print(data)
         except ConnectionResetError:
             print("Error lost connection!")
             return 0

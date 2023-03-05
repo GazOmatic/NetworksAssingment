@@ -8,6 +8,11 @@ from fileManager import fileManager, getChecksum
 controlHost = ""
 PORT = 3000
 
+hostname = socket.gethostname()
+ip = socket.gethostbyname(hostname)
+print(f"Server IP : {ip}")
+print()
+print("Waiting for clients...")
 
 def process(header: bytes, man: connectionManager):
     if type(header) == bytes:

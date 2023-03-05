@@ -11,7 +11,10 @@ from os import chdir, getcwd
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Define the address and port to connect to
+print("Enter IP of server:")
+host = input("#")
 host = 'localhost'  # The remote host IP address
+
 port = 3000       # The remote host port number
 sending = True
 
