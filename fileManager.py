@@ -29,3 +29,4 @@ def getChecksum(filename: str):
         content = open_file.read()
         hasher.update(content)
     return hasher.hexdigest()
+

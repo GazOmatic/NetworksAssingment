@@ -2,6 +2,7 @@ import socket
 import threading
 import os
 import time
+import json
 from connectionManager import connectionManager
 from fileManager import fileManager, getChecksum
 # Globals

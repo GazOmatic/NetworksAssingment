@@ -52,7 +52,6 @@ class connectionManager:
 
             ciphertext += chr(ord(char) + KEY)
         return ciphertext
-
     def decrypt(self, ciphertext: str):
         """
         Decrypts a ciphertext using a shift cipher with the given key.
