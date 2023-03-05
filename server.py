@@ -8,8 +8,10 @@ from fileManager import fileManager, getChecksum
 controlHost = ""
 PORT = 3000
 
-hostname = socket.gethostname()
-ip = socket.gethostbyname(hostname)
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(("8.8.8.8", 80))
+ip = (s.getsockname()[0])
+s.close()
 print(f"Server IP : {ip}")
 print()
 print("Waiting for clients...")
