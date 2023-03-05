@@ -52,7 +52,10 @@ class connectionManager:
             If the connection is lost or aborted, the function returns 0.
         """
         try:
-            self.sock.sendall(self.encrypt(data.encode()))
+            if type(data) == bytes:
+                self.sock.sendall(self.encrypt(data))
+            else:
+                self.sock.sendall(self.encrypt(data.encode()))
         except ConnectionResetError:
             print("Error lost connection!")
             return 0
