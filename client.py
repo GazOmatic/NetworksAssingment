@@ -39,20 +39,20 @@ while True:
 man = connectionManager(True, sock)
 
 def get(filename: str, dir: str):
-    with open(DIRECTORY + "/" +'passwords.json', 'r') as f:
-        file_passwords = json.load(f)      
-    #check if file is protected
-    file_to_find = filename
+    # with open(DIRECTORY + "/" +'passwords.json', 'r') as f:
+    #     file_passwords = json.load(f)      
+    # #check if file is protected
+    # file_to_find = filename
     
-    if file_to_find in file_passwords:
-        print(f"File is protected")
-        passcode = input("Enter passcode:")
+    # if file_to_find in file_passwords:
+    #     print(f"File is protected")
+    #     passcode = input("Enter passcode:")
         
-        if passcode == file_passwords[file_to_find]:
-            print("Password is correct")
-        else: 
-            print("Password is incorrect")
-            return ""      
+    #     if passcode == file_passwords[file_to_find]:
+    #         print("Password is correct")
+    #     else: 
+    #         print("Password is incorrect")
+    #         return ""      
   
     man.send(f"GET#{filename}#")
     header = man.receive()
