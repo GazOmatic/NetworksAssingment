@@ -59,7 +59,7 @@ def get(filename: str, dir: str):
 
 
 def listFiles():
-    man.send(f"LIST#{dir}#")
+    man.send(f"LIST#{DIRECTORY}#")
     files = man.receive().decode().split("#")
     print("Server Direcory: \n")
     for f in files:
@@ -73,6 +73,7 @@ def myFiles():
     out = ""
     for item in files:
         out += item + "\n"
+    print(DIRECTORY)
     print("Local Directory: \n")
     print(out)
 
@@ -123,7 +124,7 @@ def changeDir():
     else:
         print("ERROR - Please input c for change or d for default")
     dir = getcwd()
-    print(dir)
+    # print(dir)
     chdir('../')
 
 changeDir()
