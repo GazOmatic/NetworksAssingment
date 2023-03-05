@@ -5,7 +5,7 @@ import time
 from connectionManager import connectionManager
 from fileManager import fileManager, getChecksum
 # Globals
-controlHost = ""
+controlHost = "0.0.0.0"
 PORT = 3000
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
