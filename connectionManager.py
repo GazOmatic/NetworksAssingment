@@ -1,6 +1,7 @@
 import socket
+from cryptography.fernet import Fernet
 BATCH = 4096
-KEY = 3
+KEY = b'h-IDapb9rhqFVERkTFDdijIrIlo_jX9v8NpONIqI1mQ='
 
 
 class connectionManager:
@@ -10,6 +11,7 @@ class connectionManager:
         self.sending = sending
         self.sock = sock
         self.BATCH = BATCH
+        self.f = Fernet(KEY)
 
     def next(self, data: str):  # Function that makes sure the there is no conflict in the sending / receiving
         if self.sending == True:
@@ -22,8 +24,8 @@ class connectionManager:
 
     def receive(self, BATCH=BATCH):  # Function that will receive data
         try:
-            data = self.sock.recv(BATCH).decode()
-            data = self.decrypt(data)
+            data = self.sock.recv(BATCH)
+            data = self.decrypt(data).decode()
         except ConnectionResetError:
             print("Error lost connection!")
             return 0
@@ -33,7 +35,7 @@ class connectionManager:
 
     def send(self, data: str):  # Function that will send the data
         try:
-            self.sock.sendall(self.encrypt(data).encode())
+            self.sock.sendall(self.encrypt(data.encode()))
         except ConnectionResetError:
             print("Error lost connection!")
             return 0
@@ -46,18 +48,11 @@ class connectionManager:
         """
         Encrypts a message using a shift cipher with the given key.
         """
-        global KEY
-        ciphertext = ""
-        for char in message:
-
-            ciphertext += chr(ord(char) + KEY)
-        return ciphertext
-    def decrypt(self, ciphertext: str):
+        return self.f.encrypt(message)
+        
+        
+    def decrypt(self, message: str):
         """
         Decrypts a ciphertext using a shift cipher with the given key.
         """
-        global KEY
-        message = ""
-        for char in ciphertext:
-            message += chr(ord(char) - KEY)
-        return message
+        return self.f.decrypt(message)
