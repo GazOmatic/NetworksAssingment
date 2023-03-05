@@ -1,5 +1,5 @@
 import socket
-import time
+from time import sleep
 import os
 import json
 from connectionManager import connectionManager
@@ -31,7 +31,7 @@ while True:
         print("Connected!")
         break
     except ConnectionRefusedError:
-        time.sleep(1)
+        sleep(1)
         continue
     except KeyboardInterrupt:
         break

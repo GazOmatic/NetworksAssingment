@@ -9,12 +9,16 @@ from fileManager import fileManager, getChecksum
 controlHost = "0.0.0.0"
 PORT = 3000
 
+
+# This bit of code determines the local ip address of the server
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.connect(("8.8.8.8", 80))
 ip = (s.getsockname()[0])
 s.close()
 print(f"Server IP : {ip}")
 print()
+
+
 print("Waiting for clients...")
 
 
