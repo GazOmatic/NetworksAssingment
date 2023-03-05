@@ -2,8 +2,10 @@ import socket
 import threading
 import os
 import time
+import ssl
 from connectionManager import connectionManager
 from fileManager import fileManager, getChecksum
+
 # Globals
 controlHost = ""
 PORT = 3000
@@ -100,7 +102,6 @@ def main():
             except KeyboardInterrupt:
                 print("Done")
                 clientSocket.close()
-                print()
 
 
 if __name__ == "__main__":

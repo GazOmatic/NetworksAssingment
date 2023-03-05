@@ -7,6 +7,7 @@ import tkinter
 from tkinter import filedialog
 from os import chdir, getcwd
 # Create a socket object
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Define the address and port to connect to
@@ -41,7 +42,7 @@ def get(filename: str, dir: str):
         return ""
     print(f"Size is {size}")
     received = 0
-    with open(DIRECTORY +"/" + filename, "wb") as f:
+    with open(DIRECTORY + "/" + filename, "wb") as f:
         prev = 0
         while received < size:
             chunk = man.receive()
@@ -104,16 +105,19 @@ def upload():
     print("Successfully sent file " + filename)
     print(man.receive().decode())
 
+
 root = tkinter.Tk()
 root.wm_withdraw()
 DIRECTORY = getcwd()
+
+
 def changeDir():
     global DIRECTORY
     print("Change Directory (c) or use default? (d)")
     a = input("#")
     # set default directory to current directory
     #DIRECTORY = "R:/"
-    
+
     if (a.lower() == 'c'):
         root.call('wm', 'attributes', '.', '-topmost', True)
         DIRECTORY = filedialog.askdirectory()
@@ -126,6 +130,7 @@ def changeDir():
     dir = getcwd()
     # print(dir)
     chdir('../')
+
 
 changeDir()
 # Connect to the server
