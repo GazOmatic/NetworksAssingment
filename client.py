@@ -32,7 +32,6 @@ while True:
 
 
 man = connectionManager(True, sock)
-code = passwordManager(False)
 
 
 def get(filename: str, dir: str):
