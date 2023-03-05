@@ -36,16 +36,11 @@ while True:
     except KeyboardInterrupt:
         break
 
-
 man = connectionManager(True, sock)
 
-
 def get(filename: str, dir: str):
-  
-   
     with open(DIRECTORY + "/" +'passwords.json', 'r') as f:
-        file_passwords = json.load(f)
-        
+        file_passwords = json.load(f)      
     #check if file is protected
     file_to_find = filename
     
