@@ -22,7 +22,16 @@ class connectionManager:
             self.latestMessage = self.receive(data)
             return self.latestMessage
 
-    def receive(self, BATCH=BATCH):  # Function that will receive data
+    def receive(self, BATCH=BATCH):
+        """Receive data from the socket and decrypt it.
+
+            Args:
+                BATCH: An integer representing the maximum amount of data to receive at once (default: BATCH).
+
+            Returns:
+                If data is received successfully, a string containing the decrypted data is returned.
+                If the connection is lost, the function returns 0.
+        """
         try:
             data = self.sock.recv(BATCH)
             data = self.decrypt(data).decode()
@@ -33,7 +42,15 @@ class connectionManager:
             return 0
         return data
 
-    def send(self, data: str):  # Function that will send the data
+    def send(self, data: str): 
+        """Encrypt the given data and send it to the connected socket.
+
+        Args:
+            data: A string representing the data to send.
+        Returns:
+            If the data is sent successfully, the function returns 1.
+            If the connection is lost or aborted, the function returns 0.
+        """
         try:
             self.sock.sendall(self.encrypt(data.encode()))
         except ConnectionResetError:
@@ -49,8 +66,7 @@ class connectionManager:
         Encrypts a message using a shift cipher with the given key.
         """
         return self.f.encrypt(message)
-        
-        
+
     def decrypt(self, message: str):
         """
         Decrypts a ciphertext using a shift cipher with the given key.
