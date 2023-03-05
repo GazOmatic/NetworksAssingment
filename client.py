@@ -41,7 +41,7 @@ def get(filename: str, dir: str):
         return ""
     print(f"Size is {size}")
     received = 0
-    with open(DIRECTORY + filename, "wb") as f:
+    with open(DIRECTORY +"/" + filename, "wb") as f:
         prev = 0
         while received < size:
             chunk = man.receive()
@@ -107,6 +107,7 @@ root = tkinter.Tk()
 root.wm_withdraw()
 DIRECTORY = getcwd()
 def changeDir():
+    global DIRECTORY
     print("Change Directory (c) or use default? (d)")
     a = input("#")
     # set default directory to current directory
