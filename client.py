@@ -41,7 +41,7 @@ def get(filename: str, dir: str):
         return ""
     print(f"Size is {size}")
     received = 0
-    with open(DIRECTORY +"/" + filename, "wb") as f:
+    with open(DIRECTORY + "/" + filename, "wb") as f:
         prev = 0
         while received < size:
             chunk = man.receive()
@@ -51,11 +51,15 @@ def get(filename: str, dir: str):
             if percent - prev > 1:
                 print(f"{percent}%")
                 prev = percent
-    checksum = getChecksum(DIRECTORY + filename)
+    checksum = getChecksum(DIRECTORY + "/" + filename)
     print(f"Local : {checksum} + Remote : {header[1]}")
     if header[1] == checksum:
         print("Checksum match")
         # print(f"Rec: {received} and size : {size} diff = {received-size}")
+    else:
+        print("ERROR CHECKSUM MISMATCH - File was altered in Transit")
+        print("Removing Altered/Corrupted File")
+        os.remove(DIRECTORY + "/" + filename)
 
 
 def listFiles():
@@ -104,28 +108,31 @@ def upload():
     print("Successfully sent file " + filename)
     print(man.receive().decode())
 
+
 root = tkinter.Tk()
 root.wm_withdraw()
 DIRECTORY = getcwd()
+
+
 def changeDir():
     global DIRECTORY
     print("Change Directory (c) or use default? (d)")
     a = input("#")
     # set default directory to current directory
     #DIRECTORY = "R:/"
-    
+
     if (a.lower() == 'c'):
         root.call('wm', 'attributes', '.', '-topmost', True)
         DIRECTORY = filedialog.askdirectory()
     # error checking
-    elif (a.lower() == 'c'):
-        pass
+    elif (a.lower() == 'd'):
+        return
     # error checking
     else:
         print("ERROR - Please input c for change or d for default")
-    dir = getcwd()
     # print(dir)
     chdir('../')
+
 
 changeDir()
 # Connect to the server
@@ -145,18 +152,20 @@ while command != 'q':
         if filename != '':
             get(filename, DIRECTORY)
 
-    if command[0] == 'l':
+    elif command[0] == 'l':
         listFiles()
-    if command[0] == 'u':
+    elif command[0] == 'u':
         upload()
-    if command[0] == 'm':
+    elif command[0] == 'm':
         myFiles()
-    if command[0] == 'r':
+    elif command[0] == 'r':
         listFiles()
         deleteFile()
-    if command[0] == 'c':
+    elif command[0] == 'c':
         changeDir()
-    if command[0] == 'h':
+    elif command[0] == 'h':
         print("HELP MENU\n----------------\nUpload - (u)\nDownload - (d)")
         print("List Server Directory - (l)\nList My Directory - (m)\nHelp - (h)")  # q,
-        print("Change Directory - (c)")
+        print("Change Directory - (c)\nQuit - (q)")
+    elif command != "q":
+        print("Unknown Server Command - Type (h) for help")

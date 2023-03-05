@@ -57,11 +57,16 @@ def process(header: bytes, man: connectionManager):
             man.send("Success! - Checksum match")
         else:
             print("ERROR CHECKSUM MISMATCH - File was altered in Transit")
+            print("Removing Altered/Corrupted File")
+            os.remove("Files/" + filename)
     if comm[0] == "DELETE":
         if comm[1] == '':
             return
         print("Deleting file " + comm[1])
-        os.remove("Files/" + comm[1])
+        try:
+            os.remove("Files/" + comm[1])
+        except FileNotFoundError:
+            print("ERROR 404 - File not found")
 
 
 def clientThread(conn: socket.socket):
