@@ -39,7 +39,10 @@ man = connectionManager(True, sock)
 
 def get(filename: str, dir: str):
     man.send(f"GET#{filename}#")
-    header = man.receive().decode().split("#")
+    header = man.receive()
+    if type(header) == bytes:
+        header = header.decode()
+    header = header.split("#")
     size = header[0]
     size = int(size)
     if size == -1:
@@ -51,6 +54,8 @@ def get(filename: str, dir: str):
         prev = 0
         while received < size:
             chunk = man.receive()
+            if type(chunk) == str:
+                chunk = chunk.encode()
             f.write(chunk)
             received += len(chunk)
             percent = round((received/size)*100, 1)

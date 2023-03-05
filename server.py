@@ -16,9 +16,8 @@ print(f"Server IP : {ip}")
 print()
 print("Waiting for clients...")
 
+
 def process(header: bytes, man: connectionManager):
-    if type(header) == bytes:
-        header = header.decode()
     comm = header.split("#")
     if comm[0] == "GET":
         try:
