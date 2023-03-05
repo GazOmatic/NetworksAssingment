@@ -100,6 +100,7 @@ def main():
             except KeyboardInterrupt:
                 print("Done")
                 clientSocket.close()
+                print()
 
 
 if __name__ == "__main__":
