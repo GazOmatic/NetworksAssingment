@@ -103,15 +103,15 @@ def upload():
     print("Successfully sent file " + filename)
     print(man.receive().decode())
 
-
+root = tkinter.Tk()
+root.wm_withdraw()
 DIRECTORY = getcwd()
 def changeDir():
     print("Change Directory (c) or use default? (d)")
     a = input("#")
     # set default directory to current directory
     #DIRECTORY = "R:/"
-    root = tkinter.Tk()
-    root.wm_withdraw()
+    
     if (a.lower() == 'c'):
         root.call('wm', 'attributes', '.', '-topmost', True)
         DIRECTORY = filedialog.askdirectory()
