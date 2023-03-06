@@ -69,7 +69,7 @@ def get(filename: str, dir: str):
     with open(DIRECTORY + "/" + filename, "wb") as f:
         prev = 0
         while received < size:
-            chunk = man.receive()
+            chunk = man.receiveBytes()
             if type(chunk) == str:
                 chunk = chunk.encode()
             f.write(chunk)
@@ -143,10 +143,10 @@ def upload():
              [-1] + "#" + str(size) + "#" + checksum)
     fm = fileManager(filename)
     while fm.chunk == fm.chunkSize:
-        if man.send(fm.getChunk()) == 0:
+        if man.sendBytes(fm.getChunk()) == 0:
             break
     print("Successfully sent file " + filename)
-    print(man.receive().decode())
+    print(man.receive())
     
     if protected == True:
         man.send("PASSWORD#" + os.path.basename(filename) + "#" + passcode)

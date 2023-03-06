@@ -33,8 +33,9 @@ class connectionManager:
                 If the connection is lost, the function returns 0.
         """
         try:
-            data = self.sock.recv(BATCH)
-            data = self.decrypt(data).decode()
+            data = self.sock.recv(BATCH + 1464)
+            data = self.decrypt(data)
+            data = data.decode()
         except ConnectionResetError:
             print("Error lost connection!")
             return 0
@@ -64,14 +65,57 @@ class connectionManager:
             return 0
         return 1
 
-    def encrypt(self, message: str):
+    def sendBytes(self, data: str):
+        """Encrypt the given data and send it to the connected socket.
+
+        Args:
+            data: A string representing the data to send.
+        Returns:
+            If the data is sent successfully, the function returns 1.
+            If the connection is lost or aborted, the function returns 0.
+        """
+        try:
+
+            self.sock.sendall(self.encrypt(data))
+        except ConnectionResetError:
+            print("Error lost connection!")
+            return 0
+        except ConnectionAbortedError:
+            print("Connection aborted")
+            return 0
+        return 1
+
+    def receiveBytes(self, BATCH=BATCH):
+        """Receive data from the socket and decrypt it.
+
+            Args:
+                BATCH: An integer representing the maximum amount of data to receive at once (default: BATCH).
+
+            Returns:
+                If data is received successfully, a string containing the decrypted data is returned.
+                If the connection is lost, the function returns 0.
+        """
+        try:
+            data = self.sock.recv(BATCH + 1464)
+            data = self.decrypt(data)
+        except ConnectionResetError:
+            print("Error lost connection!")
+            return 0
+        except ConnectionAbortedError:
+            return 0
+        return data
+
+    def encrypt(self, message: bytes):
         """
         Encrypts a message using the Fernet library.
         """
+        print(len(message))
+        print(len(self.f.encrypt(message)))
         return self.f.encrypt(message)
 
-    def decrypt(self, message: str):
+    def decrypt(self, message: bytes):
         """
         Decrypts a message using the Fernet Library.
         """
+        print(message)
         return self.f.decrypt(message)

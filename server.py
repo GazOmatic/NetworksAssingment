@@ -34,7 +34,7 @@ def process(header: bytes, man: connectionManager):
         man.send(str(size) + "#" + checksum)
         fm = fileManager("Files/" + comm[1])
         while fm.chunk == fm.chunkSize:
-            if man.send(fm.getChunk()) == 0:
+            if man.sendBytes(fm.getChunk()) == 0:
                 break
         print("Successfully sent file " + comm[1])
     elif comm[0] == "LIST":
@@ -55,7 +55,7 @@ def process(header: bytes, man: connectionManager):
         with open("Files/" + filename, "wb") as f:
             prev = 0
             while received < size:
-                chunk = man.receive()
+                chunk = man.receiveBytes()
                 f.write(chunk)
                 received += len(chunk)
                 percent = round((received/size)*100, 1)
