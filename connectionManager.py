@@ -109,13 +109,10 @@ class connectionManager:
         """
         Encrypts a message using the Fernet library.
         """
-        print(len(message))
-        print(len(self.f.encrypt(message)))
         return self.f.encrypt(message)
 
     def decrypt(self, message: bytes):
         """
         Decrypts a message using the Fernet Library.
         """
-        print(message)
         return self.f.decrypt(message)

@@ -23,7 +23,7 @@ sending = True
 protectedList = []
 protected = False
 
-
+# While loop to keep trying to connect to the server
 while True:
     print("Attempting connection...")
     try:
@@ -36,24 +36,36 @@ while True:
     except KeyboardInterrupt:
         break
 
+# Create a connection manager
 man = connectionManager(True, sock)
 
+
 def get(filename: str, dir: str):
-    # with open(DIRECTORY + "/" +'passwords.json', 'r') as f:
-    #     file_passwords = json.load(f)      
-    # #check if file is protected
-    # file_to_find = filename
-    
-    # if file_to_find in file_passwords:
-    #     print(f"File is protected")
-    #     passcode = input("Enter passcode:")
-        
-    #     if passcode == file_passwords[file_to_find]:
-    #         print("Password is correct")
-    #     else: 
-    #         print("Password is incorrect")
-    #         return ""      
-  
+    """
+    Retrieves a file with the specified filename from the server using the
+    'GET' command and saves it to the specified directory.
+
+    Args:
+        filename (str): The name of the file to retrieve.
+        dir (str): The directory to save the file to.
+
+    Returns:
+        str: An empty string if the file could not be retrieved, or the
+        filename of the retrieved file if successful.
+
+    Raises:
+        None.
+
+    This function sends a 'GET' command to the server with the specified filename,
+    receives the file data in chunks, and saves it to the specified directory.
+    If the file is not found on the server, a '404 - File not found' message is
+    printed and an empty string is returned.
+
+    The function also calculates the checksum of the downloaded file and compares
+    it to the checksum received from the server. If the checksums do not match,
+    the downloaded file is deleted and an error message is printed.
+
+    """
     man.send(f"GET#{filename}#")
     header = man.receive()
     if type(header) == bytes:
@@ -119,26 +131,26 @@ def upload():
     root = tkinter.Tk()
     root.wm_withdraw()
     root.call('wm', 'attributes', '.', '-topmost', True)
-    
-    print("Is the file open (o) or protected (p)?:")
-    security = input("#")
-    
-    if security == "p":
-        print("Enter passcode:")
-        passcode = input("#")
-        protected = True 
-    
+
+    # print("Is the file open (o) or protected (p)?:")
+    # security = input("#")
+
+    # if security == "p":
+    #     print("Enter passcode:")
+    #     passcode = input("#")
+    #     protected = True
+
     filename = filedialog.askopenfilename()
     if filename == "":  # If no file given excape the function
         return
-  
+
     try:
         checksum = getChecksum(filename)
         size = os.path.getsize(filename)
     except FileNotFoundError:
         man.send("-1")
-        return ""        
-    
+        return ""
+
     man.send("POST#" + filename.split("/")
              [-1] + "#" + str(size) + "#" + checksum)
     fm = fileManager(filename)
@@ -147,9 +159,6 @@ def upload():
             break
     print("Successfully sent file " + filename)
     print(man.receive())
-    
-    if protected == True:
-        man.send("PASSWORD#" + os.path.basename(filename) + "#" + passcode)
 
 
 root = tkinter.Tk()
@@ -169,7 +178,7 @@ def changeDir():
         DIRECTORY = filedialog.askdirectory()
         if DIRECTORY == '':
             DIRECTORY = getcwd()
-        chdir(DIRECTORY) #
+        chdir(DIRECTORY)
     # error checking
     elif (a.lower() == 'd'):
         return
