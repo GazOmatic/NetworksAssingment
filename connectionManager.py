@@ -23,7 +23,7 @@ class connectionManager:
             return self.latestMessage
 
     def receive(self, BATCH=BATCH):
-        """Receive data from the socket and decrypt it.
+        """Receives data from the socket and decrypts it.
 
             Args:
                 BATCH: An integer representing the maximum amount of data to receive at once (default: BATCH).
@@ -31,6 +31,7 @@ class connectionManager:
             Returns:
                 If data is received successfully, a string containing the decrypted data is returned.
                 If the connection is lost, the function returns 0.
+                Will decode the message
         """
         try:
             data = self.sock.recv(BATCH + 1464)
@@ -44,13 +45,14 @@ class connectionManager:
         return data
 
     def send(self, data: str):
-        """Encrypt the given data and send it to the connected socket.
+        """Encrypts the given data and send it to the connected socket.
 
         Args:
             data: A string representing the data to send.
         Returns:
             If the data is sent successfully, the function returns 1.
             If the connection is lost or aborted, the function returns 0.
+            Will encode the message
         """
         try:
             if type(data) == bytes:
@@ -66,13 +68,14 @@ class connectionManager:
         return 1
 
     def sendBytes(self, data: str):
-        """Encrypt the given data and send it to the connected socket.
+        """Encrypts the given data and send it to the connected socket.
 
         Args:
             data: A string representing the data to send.
         Returns:
             If the data is sent successfully, the function returns 1.
             If the connection is lost or aborted, the function returns 0.
+            Will not encode the message, only send bytes
         """
         try:
 
@@ -86,7 +89,7 @@ class connectionManager:
         return 1
 
     def receiveBytes(self, BATCH=BATCH):
-        """Receive data from the socket and decrypt it.
+        """Receives data from the socket and decrypts it.
 
             Args:
                 BATCH: An integer representing the maximum amount of data to receive at once (default: BATCH).
@@ -94,6 +97,7 @@ class connectionManager:
             Returns:
                 If data is received successfully, a string containing the decrypted data is returned.
                 If the connection is lost, the function returns 0.
+                Will not decode the message, only receive bytes
         """
         try:
             data = self.sock.recv(BATCH + 1464)

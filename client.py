@@ -42,29 +42,7 @@ man = connectionManager(True, sock)
 
 def get(filename: str, dir: str):
     """
-    Retrieves a file with the specified filename from the server using the
-    'GET' command and saves it to the specified directory.
-
-    Args:
-        filename (str): The name of the file to retrieve.
-        dir (str): The directory to save the file to.
-
-    Returns:
-        str: An empty string if the file could not be retrieved, or the
-        filename of the retrieved file if successful.
-
-    Raises:
-        None.
-
-    This function sends a 'GET' command to the server with the specified filename,
-    receives the file data in chunks, and saves it to the specified directory.
-    If the file is not found on the server, a '404 - File not found' message is
-    printed and an empty string is returned.
-
-    The function also calculates the checksum of the downloaded file and compares
-    it to the checksum received from the server. If the checksums do not match,
-    the downloaded file is deleted and an error message is printed.
-
+    Generates the GET header and sends it to the server. Takes in filename and directory. Returns a blank string if the file was not found
     """
     man.send(f"GET#{filename}#")
     header = man.receive()
@@ -102,6 +80,9 @@ def get(filename: str, dir: str):
 
 
 def listFiles():
+    """
+    Sends the LIST header, gets the server reply and then lists the files
+    """
     man.send(f"LIST#{DIRECTORY}#")
     files = man.receive().split("#")
     print("Server Direcory: \n")
@@ -112,6 +93,9 @@ def listFiles():
 
 
 def myFiles():
+    """
+    List Files on the local directory
+    """
     files = os.listdir(DIRECTORY)
     out = ""
     for item in files:
@@ -122,12 +106,17 @@ def myFiles():
 
 
 def deleteFile():
+    """
+    Deletes a file in the server directory by sending the server a delete command
+    """
     print("Enter filename to remove:")
     filename = input(": ")
     man.send(f"DELETE#{filename}#")
 
 
 def upload():
+    """
+    Client can specify a file to upload to the server. Client sends a POST command along with the file and then it is uploaded"""
     root = tkinter.Tk()
     root.wm_withdraw()
     root.call('wm', 'attributes', '.', '-topmost', True)
@@ -166,13 +155,10 @@ root.wm_withdraw()
 DIRECTORY = getcwd()
 
 
-def changeDir():
+def changeDir(): # Promps the user to change directory
     global DIRECTORY
     print("Change Directory (c) or use default? (d)")
     a = input("#")
-    # set default directory to current directory
-    #DIRECTORY = "R:/"
-
     if (a.lower() == 'c'):
         root.call('wm', 'attributes', '.', '-topmost', True)
         DIRECTORY = filedialog.askdirectory()
@@ -194,12 +180,13 @@ changeDir()
 print("Welcome to CLS File Sharing Platform")
 print("Type (h) for list of commands")
 
+# Command loop
 command = ''
 while command != 'q':
     command = input("#")
     if len(command) == 0:
         command = ' '
-    os.system("cls")
+    os.system("cls") # clear screen when command is successfull
     if command == 'd':
         listFiles()
         print("Enter Filename:")

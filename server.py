@@ -22,7 +22,7 @@ print()
 print("Waiting for clients...")
 
 
-def process(header: bytes, man: connectionManager):
+def process(header: bytes, man: connectionManager): # Receives a header message and processes it to do  the specified command
     comm = header.split("#")
     if comm[0] == "GET":
         try:
@@ -83,7 +83,7 @@ def process(header: bytes, man: connectionManager):
         man.send("ERROR - INVALID HEADER")
 
 
-def clientThread(conn: socket.socket):
+def clientThread(conn: socket.socket): # The target method when the server receieves a connection the server creates a new thread
     with conn:
         # create a new connection manager and set to not sending
         man = connectionManager(False, conn)
@@ -99,7 +99,7 @@ def clientThread(conn: socket.socket):
 
 # Begining of the server
 
-def main():
+def main(): # The main part of the server, waits for a connection on the correct port and then when a client connects it creates a new thread.
     global threads, controlHost
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
         clientSocket.bind((controlHost, PORT))
