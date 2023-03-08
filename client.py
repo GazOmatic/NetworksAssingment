@@ -121,13 +121,14 @@ def upload():
     root.wm_withdraw()
     root.call('wm', 'attributes', '.', '-topmost', True)
 
-    # print("Is the file open (o) or protected (p)?:")
-    # security = input("#")
+    # Here the client can specify if they want their file to be open or protected
+    print("Is the file open (o) or protected (p)?:")
+    security = input("#")
 
-    # if security == "p":
-    #     print("Enter passcode:")
-    #     passcode = input("#")
-    #     protected = True
+    if security == "p":
+        print("Enter passcode:")
+        passcode = input("#")
+        protected = True
 
     filename = filedialog.askopenfilename()
     if filename == "":  # If no file given excape the function
@@ -155,7 +156,7 @@ root.wm_withdraw()
 DIRECTORY = getcwd()
 
 
-def changeDir(): # Promps the user to change directory
+def changeDir():  # Promps the user to change directory
     global DIRECTORY
     print("Change Directory (c) or use default? (d)")
     a = input("#")
@@ -186,7 +187,7 @@ while command != 'q':
     command = input("#")
     if len(command) == 0:
         command = ' '
-    os.system("cls") # clear screen when command is successfull
+    os.system("cls")  # clear screen when command is successfull
     if command == 'd':
         listFiles()
         print("Enter Filename:")
