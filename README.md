@@ -19,43 +19,66 @@ cryptography==39.0.2
 
 ### Setting up a connection
 
-![1](1.png)
 
+
+![1](./Screenshots/1.png)
 A client waiting for the server to start
 
-2)
+
+
+![2](./Screenshots/2.png)
 A server waiting for clients to join
 
-3)
+
+
+![3](./Screenshots/3.png)
 Here we can see the server has connected to 2 clients
+
+
 
 ### Server and Client Directories
 
 Upon starting the client, the user will be prompted to where they would like their files to be stored. If they choose the default directory, all files the client downloads will be stored in the current working directory of the client. Otherwise, the client can specify which directory they would like for their downloaded files to be stored. On the command line interface, the user has the ability to list all the files in their own directory and also list the files in the server directory (for convenience the screen is cleared between commands).
 
-4)
+
+
+![4](./Screenshots/4.png)
 Client prompting the user to choose the window which they would like to make their directory.
 
-5)
+
+
+![7](./Screenshots/7.png)
 Displaying client directory files
+
+
 
 ### Uploading and downloading
 
 Also using the command line interface, the user can both upload files to the server, and download files from the server. This functionality works just as you’d expect. However, as we know, waiting for files to download is never fun. To ease this burden, we have implemented a loading bar to show the progress of file uploads and downloads. We also added a feature to
 
-6)7)
+
+
+![6](./Screenshots/6.png)
 The server and the client’s response to the client requesting for the list of files on the server directory.
+
+
 
 Note: If you are new to using this program, or forgot certain features, you can type “h” to view the help menu which displays all client commands, the help menu is show below
 
-8)
+![5](./Screenshots/5.png)
 Help Menu
 
-9)
+
+
+![9](./Screenshots/9.png)
 Client uploading file to server
 
-10)
+
+
+![10](./Screenshots/10.png)
 Client downloading file from server
+
+
 
 ### Encryption
 
@@ -70,8 +93,12 @@ This is achieved by using a md5 checksum generated in the send methods of both t
 
 The user is prompted to indicate the file sharing permissions by indicating if the file is open (able to be downloaded and removed from the server by any user) or protected (only downloadable and removeable by users who have the secret passcode). If they choose to upload a protected file, they will be promoted to provide a passcode which will be added to a JSON file which will store all protected filenames and their corresponding passcode. If this user or another user wishes to download or remove this file they will be prompted to enter the file's passcode. If an incorrect passcode is provided the server goes back to waiting for a new command. If the correct passcode is provided the file proceeds to download to the client or be removed from the server (depending on what the command was).
 
-11)
+
+
+![8](./Screenshots/8.png)
 Showcase of file protection
+
+
 
 ### Protocol design & specification
 
