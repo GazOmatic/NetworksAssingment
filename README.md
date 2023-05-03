@@ -19,7 +19,7 @@ cryptography==39.0.2
 
 ### Setting up a connection
 
-![1](1) Client connecting.png)
+![1](1)
 A client waiting for the server to start
 
 2)
